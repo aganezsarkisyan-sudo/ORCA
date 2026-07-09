@@ -2,16 +2,17 @@
 name = "orca"
 version = "0.1.0"
 description = "ORCA - Minimal desktop application scaffold"
-authors = ["aganezsarkisyan-sudo <>"]
+authors = ["ORCA Developer <dev@orca.local>"]
 
 [tool.poetry.dependencies]
-python = ">=3.12,<4.0"
+python = ">=3.11,<3.13"
 PySide6 = "*"
 SQLAlchemy = "*"
 httpx = "*"
 loguru = "*"
 openpyxl = "*"
 pydantic-settings = "*"
+qasync = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

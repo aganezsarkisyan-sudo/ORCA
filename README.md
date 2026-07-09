@@ -2,8 +2,8 @@
 
 ORCA is a minimal Python desktop application scaffold using PySide6 following a clean-architecture layout.
 
-Requirements
-- Python 3.12
+## Requirements
+- Python 3.11+
 - PySide6
 - SQLAlchemy
 - SQLite
@@ -11,18 +11,41 @@ Requirements
 - loguru
 - openpyxl
 - pydantic-settings
+- qasync
 
-How to run
+## Quick Start (One Command!)
 
-1. Create a virtual environment and install dependencies (example using poetry or pip):
+### Windows
+```bash
+setup.bat
+```
 
-   poetry install
-   # or
+### macOS / Linux
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+## Manual Installation
+
+1. Create a virtual environment and install dependencies:
+
+   ```bash
+   python -m venv venv
+   
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   
    pip install -r requirements.txt
+   ```
 
 2. Run the application:
 
+   ```bash
    python main.py
+   ```
 
 What this initial scaffold provides
 - A MainWindow with a dark theme
