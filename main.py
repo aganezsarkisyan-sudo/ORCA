@@ -1,22 +1,22 @@
 """Entry point for ORCA application."""
 from __future__ import annotations
 
-from typing import Final
 import sys
+import asyncio
+from typing import Final
 
+from qasync import QEventLoop, asyncSlot
 from PySide6.QtWidgets import QApplication
 
 from app.ui.main_window import MainWindow
+from app.core.app_context import get_app_context
 from app.core.logging import setup_logging
+from app.core.config import settings
 
 VERSION: Final[str] = "0.1.0"
 
 
 def _apply_dark_palette(app: QApplication) -> None:
-    """Apply a simple dark palette to the QApplication.
-
-    Kept minimal to avoid extra dependencies.
-    """
     from PySide6.QtGui import QPalette, QColor
 
     palette = QPalette()
@@ -35,15 +35,24 @@ def _apply_dark_palette(app: QApplication) -> None:
 
 
 def main() -> int:
-    """Create the QApplication, set up logging and show the main window."""
     setup_logging()
+
     app = QApplication(sys.argv)
     _apply_dark_palette(app)
 
-    window = MainWindow()
+    # qasync event loop
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
+
+    ctx = get_app_context()
+
+    window = MainWindow(ctx)
     window.show()
 
-    return app.exec()
+    with loop:
+        loop.run_forever()
+
+    return 0
 
 
 if __name__ == "__main__":
