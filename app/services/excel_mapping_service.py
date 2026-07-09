@@ -6,7 +6,7 @@ from datetime import datetime
 from loguru import logger
 
 from app.repositories.excel_mapping_repository import ExcelMappingRepository
-from app.reposit ories import mapping_repository as legacy_repo_module
+from app.repositories import mapping_repository as legacy_repo_module
 from app.repositories.mapping_repository import MappingRepository
 from app.services.mapping_service import MappingService
 from app.database.models import AccountMapping as LegacyAccountMapping
