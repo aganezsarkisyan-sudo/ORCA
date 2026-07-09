@@ -14,6 +14,7 @@ from sqlalchemy import (
     Text,
     ForeignKey,
     UniqueConstraint,
+    Index,
 )
 from sqlalchemy.orm import relationship
 
@@ -51,6 +52,7 @@ class Account(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     mappings = relationship("AccountMapping", back_populates="account")
+    excel_mappings = relationship("ExcelMapping", back_populates="account")
 
 
 class AccountMapping(Base):
@@ -67,6 +69,11 @@ class AccountMapping(Base):
     deps_cell = Column(String(64), nullable=True)
     avg_days_cell = Column(String(64), nullable=True)
     enabled = Column(Boolean, default=True)
+    # Legacy timestamps (may be added by migration)
+    confidence = Column(Float, nullable=True)
+    matching_method = Column(String(255), nullable=True)
+    created_at = Column(DateTime, nullable=True)
+    updated_at = Column(DateTime, nullable=True)
 
     account = relationship("Account", back_populates="mappings")
 
@@ -99,3 +106,30 @@ class SyncHistory(Base):
     accounts_success = Column(Integer, default=0)
     accounts_failed = Column(Integer, default=0)
     errors = Column(Text, nullable=True)
+
+
+class AccountMappingDeprecated(Base):
+    """Alias mapping to assist migrations if necessary."""
+    __tablename__ = "account_mapping"
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
+
+
+class ExcelMapping(Base):
+    __tablename__ = "excel_mapping"
+
+    id = Column(Integer, primary_key=True)
+    account_id = Column(Integer, ForeignKey("accounts.id"), nullable=False, index=True)
+    worksheet = Column(String(255), nullable=True)
+    anchor_cell = Column(String(32), nullable=False)
+    template_version = Column(String(64), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    account = relationship("Account", back_populates="excel_mappings")
+
+    __table_args__ = (
+        UniqueConstraint("worksheet", "anchor_cell", name="uq_worksheet_anchor"),
+        Index("ix_excelmapping_account", "account_id"),
+    )
