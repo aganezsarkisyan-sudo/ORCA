@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "orca"
+version = "0.1.0"
+description = "ORCA - Minimal desktop application scaffold"
+authors = ["aganezsarkisyan-sudo <>"]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+PySide6 = "*"
+SQLAlchemy = "*"
+httpx = "*"
+loguru = "*"
+openpyxl = "*"
+pydantic-settings = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
