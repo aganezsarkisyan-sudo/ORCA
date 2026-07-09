@@ -1,4 +1,3 @@
-"""SQLAlchemy models for ORCA local database."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -123,6 +122,9 @@ class ExcelMapping(Base):
     account_id = Column(Integer, ForeignKey("accounts.id"), nullable=False, index=True)
     worksheet = Column(String(255), nullable=True)
     anchor_cell = Column(String(32), nullable=False)
+    # use template_name to identify the template (e.g., main_report, daily_report)
+    template_name = Column(String(128), nullable=True)
+    # keep legacy template_version if present for compatibility
     template_version = Column(String(64), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
